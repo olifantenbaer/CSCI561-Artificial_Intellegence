@@ -1,0 +1,2 @@
+1
+["or", ["not", ["implies", "P", "Q"]], ["implies", "R", "P"]]
