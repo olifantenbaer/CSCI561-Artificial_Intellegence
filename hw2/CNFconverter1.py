@@ -1,25 +1,6 @@
 import sys
 import pdb
 from types import*
-
-def cnfIff(cnfList):
-    if isVariable(cnfList):
-        return cnfList
-    if cnfList[0] == "not":
-        cnfList[1] = cnfIff(cnfList[1])
-    if cnfList[0] == "and":
-        for i in range(1,len(cnfList)):
-            cnfList[i] = cnfIff(cnfList[i])
-    if cnfList[0] == "or":
-        for i in range(1,len(cnfList)):
-            cnfList[i] = cnfIff(cnfList[i])
-    if cnfList[0] == "implies":
-        cnfList[1] = cnfIff(cnfList[1])
-        cnfList[2] = cnfIff(cnfList[2])
-    if cnfList[0] == "iff":
-        cnfList = ["or",["implies",cnfList[0],cnfList[1]],["implies",cnfList[1],cnfList[0]]]
-    return cnfList
-
 def cnfConverter(cnfList):
     if isVariable(cnfList) is True:
         return cnfList
@@ -116,6 +97,7 @@ def isVariable(cnfList)	:
     else:
         return False
 
+
 def mergeOr(cnfList):
     i = 1
     maxL = len(cnfList)
@@ -205,6 +187,9 @@ print sentenceNum
 for i in range(0,sentenceNum):
     cnfList = eval(inputFile.readline())
     cnfList = cnfConverter(cnfList)
-    outputFile.write(str(i)+" "+repr(cnfList))
+    outputFile.write(repr(cnfList))
     outputFile.write("\n")
     print i
+
+
+

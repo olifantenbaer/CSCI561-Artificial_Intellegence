@@ -1,25 +1,6 @@
 import sys
 import pdb
 from types import*
-
-def cnfIff(cnfList):
-    if isVariable(cnfList):
-        return cnfList
-    if cnfList[0] == "not":
-        cnfList[1] = cnfIff(cnfList[1])
-    if cnfList[0] == "and":
-        for i in range(1,len(cnfList)):
-            cnfList[i] = cnfIff(cnfList[i])
-    if cnfList[0] == "or":
-        for i in range(1,len(cnfList)):
-            cnfList[i] = cnfIff(cnfList[i])
-    if cnfList[0] == "implies":
-        cnfList[1] = cnfIff(cnfList[1])
-        cnfList[2] = cnfIff(cnfList[2])
-    if cnfList[0] == "iff":
-        cnfList = ["or",["implies",cnfList[0],cnfList[1]],["implies",cnfList[1],cnfList[0]]]
-    return cnfList
-
 def cnfConverter(cnfList):
     if isVariable(cnfList) is True:
         return cnfList
@@ -98,8 +79,6 @@ def deleteOrReturn(cnfList):
     for item in cnfList:
         if item not in newList:
             newList.append(item)
-    if len(newList) == 2 and newList[0] == "or":
-        return newList[1]
     return newList
 
 def orReturn(cnfList):
@@ -109,12 +88,13 @@ def orReturn(cnfList):
     return True
 
 def isVariable(cnfList)	:
-    if isinstance(cnfList,StringType) and len(cnfList) == 1:
+    if type(cnfList) is StringType:
         return True
-    elif isinstance(cnfList,ListType) and cnfList[0] == "not" and isinstance(cnfList[1],StringType) and len(cnfList[1]) == 1:
-        return True
-    else:
-        return False
+    elif cnfList[0] is "not":
+        if type(cnfList[1]) is StringType:
+            return True
+        else:
+            return False
 
 def mergeOr(cnfList):
     i = 1
@@ -197,14 +177,10 @@ def not_Or(cnfList):
     cnfList = cnfList[1]
     return cnfList
 
-#inputFile = open(sys.argv[2],"r")
-inputFile = open("test.txt","r")
-outputFile = open("sentences_CNF.txt","w")
-sentenceNum = int(inputFile.readline())
-print sentenceNum
-for i in range(0,sentenceNum):
-    cnfList = eval(inputFile.readline())
-    cnfList = cnfConverter(cnfList)
-    outputFile.write(str(i)+" "+repr(cnfList))
-    outputFile.write("\n")
-    print i
+file = open("sentences.txt")
+sentenceNum = int(file.readline())
+cnfList = ["not", ["implies", ["implies", ["or", "P", ["not", "Q"]], "R"], ["and", "P", "R"]]]
+cnfList = cnfConverter(cnfList)
+print cnfList
+
+

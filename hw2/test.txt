@@ -1,2 +1,2 @@
 1
-["or", ["not", ["implies", "P", "Q"]], ["implies", "R", "P"]]
+["not", ["implies", ["implies", ["or", "P", ["not", "Q"]], "R"], ["and", "P", "R"]]]
